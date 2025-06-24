@@ -21,6 +21,9 @@ RUN apk add --update --no-cache \
     libxslt-dev \
     tzdata
 
+RUN apk add --no-cache bash
+
+
 # Set the working directory inside the container.
 WORKDIR /rails
 

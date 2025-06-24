@@ -49,6 +49,25 @@ services:
     stdin_open: true
     tty: true
 
+  # Add a new service for running tests
+  test:
+    build: .
+    command: sh -c "bundle exec rails db:test:prepare && bundle exec rspec"
+    volumes:
+      - .:/rails
+      - /rails/node_modules
+    environment:
+      RAILS_ENV: test
+      DATABASE_HOST: db
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: password
+      REDIS_URL: "redis://redis:6379/2"
+      RAILS_LOG_TO_STDOUT: "true"
+      # Add this environment variable to allow www.example.com host in tests
+      RAILS_HOSTS: "www.example.com"
+    depends_on:
+      - db
+      - redis
 
 # Define the named volumes for data persistence.
 volumes:

@@ -38,16 +38,18 @@ gem "stripe"
 
 # Group for development and testing
 group :development, :test do
+  gem "bootsnap", require: false
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
-  gem "bootsnap", require: false
   gem "rspec-rails", "~> 6.0.0"
   gem "factory_bot_rails"
   gem "faker"
+  gem "webmock"
+  gem "vcr"
+  gem "shoulda-matchers", ">= 5.0"
 end
 
 group :development do
-  # Use console on exceptions pages
   gem "web-console"
   gem "listen", "~> 3.3"
   gem 'foreman'
