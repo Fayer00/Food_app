@@ -1,8 +1,7 @@
 module Api
   module V1
-    class MealsController < ApplicationController
+    class MealsController < ApiController
       def index
-        # ... existing index logic ...
         @meals = Meal.includes(:category).all
 
         # Search
@@ -22,7 +21,7 @@ module Api
           end
         end
 
-        render json: @meals.to_json(include: :category)
+        render json: @meals, include: :category
       end
 
       def convert_currency

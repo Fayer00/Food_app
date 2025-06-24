@@ -33,6 +33,8 @@ gem "tailwindcss-rails"
 
 gem "jsbundling-rails"
 gem "money"
+# For interacting with the Stripe API
+gem "stripe"
 
 # Group for development and testing
 group :development, :test do

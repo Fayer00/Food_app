@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 export default function Cart({ cart, updateQuantity, onCheckout, currency, currencySymbol }) {
     const [isOpen, setIsOpen] = useState(false);
-    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
+    const total = cart.reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0).toFixed(2);
 
     return (
         <div>
@@ -26,7 +26,7 @@ export default function Cart({ cart, updateQuantity, onCheckout, currency, curre
                                     <div key={item.id} className="flex justify-between items-center mb-2">
                                         <div>
                                             <p className="font-semibold">{item.name}</p>
-                                            <p className="text-sm text-gray-600">{currencySymbol}{item.price.toFixed(2)}</p>
+                                            <p className="text-sm text-gray-600">{currencySymbol}{parseFloat(item.price).toFixed(2)}</p>
                                         </div>
                                         <div className="flex items-center">
                                             <button onClick={() => updateQuantity(item.id, -1)} className="px-2 py-1 bg-gray-200 rounded">-</button>

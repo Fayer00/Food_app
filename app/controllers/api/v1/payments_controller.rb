@@ -1,10 +1,8 @@
-require 'stripe'
-
 module Api
   module V1
-    class PaymentsController < ApplicationController
+    class PaymentsController < ApiController
       def create_payment_intent
-        Stripe.api_key = ENV['STRIPE_SECRET_KEY']
+        Stripe.api_key = Rails.application.credentials.stripe_secret_key
 
         begin
           payment_intent = Stripe::PaymentIntent.create(
