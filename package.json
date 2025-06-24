@@ -1,0 +1,16 @@
+{
+  "name": "food_app",
+  "private": "true",
+  "dependencies": {
+    "@stripe/react-stripe-js": "^2.1.2",
+    "@stripe/stripe-js": "^2.1.0",
+    "axios": "^1.4.0",
+    "esbuild": "^0.18.17",
+    "lodash.debounce": "^4.0.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "scripts": {
+    "build": "esbuild app/javascript/application.js --bundle --sourcemap --outdir=app/assets/builds --public-path=/assets --loader:.js=jsx"
+  }
+}

@@ -1,0 +1,1 @@
+Money.default_bank = Money::Bank::VariableExchange.new(Money::RatesStore::Memory.new)
