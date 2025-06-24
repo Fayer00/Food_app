@@ -35,34 +35,23 @@ export default function App() {
         axios.get('/api/v1/categories')
             .then(resp => setCategories(resp.data))
             .catch(error => console.error("Error fetching categories:", error));
-
-        fetchMeals();
     }, []);
 
-    const fetchMeals = (params = {}) => {
+    const fetchMeals = useCallback((params = {}) => {
         const apiParams = { ...params, currency };
         axios.get('/api/v1/meals', { params: apiParams })
             .then(resp => setMeals(resp.data))
             .catch(error => console.error("Error fetching meals:", error));
-    };
+    }, [currency]);
 
     const handleCurrencyChange = (newCurrency) => {
         setCurrency(newCurrency);
-        if (newCurrency === 'USD') {
-            fetchMeals({ /* existing filters */ });
-        } else {
-            axios.get(`/api/v1/convert_currency?to_currency=${newCurrency}`)
-                .then(resp => {
-                    setMeals(resp.data);
-                })
-                .catch(error => console.error("Error converting currency:", error));
-        }
     };
 
     // Debounced search handler
     const debouncedFetchMeals = useMemo(() =>
             debounce(params => fetchMeals(params), 300)
-        , []);
+        , [fetchMeals]);
 
     useEffect(() => {
         const params = {
@@ -104,7 +93,7 @@ export default function App() {
     };
 
     const handleCheckout = () => {
-        const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        const totalAmount = cart.reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0);
         if (totalAmount <= 0) {
             alert("Your cart is empty!");
             return;
@@ -157,15 +146,15 @@ export default function App() {
                     <>
                         {/* Filter and Sort Controls */}
                         <div className="mb-8 p-4 bg-white rounded-lg shadow">
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
                                 <input
                                     type="text"
                                     placeholder="Search meals..."
-                                    className="p-2 border border-gray-300 rounded-md"
+                                    className="p-2 border border-gray-300 rounded-md w-full"
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                                 <select
-                                    className="p-2 border border-gray-300 rounded-md"
+                                    className="p-2 border border-gray-300 rounded-md w-full"
                                     onChange={(e) => setSelectedCategory(e.target.value)}
                                     value={selectedCategory}
                                 >
@@ -175,8 +164,9 @@ export default function App() {
                                     ))}
                                 </select>
                                 <div className="flex items-center justify-around">
-                                    <button onClick={() => handleSort('name')} className="font-semibold text-gray-700">Sort by Name</button>
-                                    <button onClick={() => handleSort('price')} className="font-semibold text-gray-700">Sort by Price</button>
+                                    <button onClick={() => handleSort('name')} className="font-semibold text-gray-700 hover:text-blue-500">Name</button>
+                                    <button onClick={() => handleSort('price')} className="font-semibold text-gray-700 hover:text-blue-500">Price</button>
+                                    <button onClick={() => handleSort('rating')} className="font-semibold text-gray-700 hover:text-blue-500">Rating</button>
                                 </div>
                             </div>
                         </div>

@@ -18,6 +18,9 @@ module Api
             @meals = @meals.order(price: direction)
           when 'name'
             @meals = @meals.order(name: direction)
+            # Add the case for sorting by rating.
+          when 'rating'
+            @meals = @meals.order(rating: direction)
           end
         end
 

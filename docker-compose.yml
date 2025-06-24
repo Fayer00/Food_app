@@ -53,6 +53,7 @@ services:
   test:
     build: .
     command: sh -c "bundle exec rails db:test:prepare && bundle exec rspec"
+    profiles: ["test"]
     volumes:
       - .:/rails
       - /rails/node_modules
