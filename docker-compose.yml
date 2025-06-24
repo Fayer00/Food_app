@@ -1,0 +1,56 @@
+services:
+  db:
+    image: postgres:14-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      # Expose port 5432 on the host to connect with a DB client if needed.
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+
+  web:
+    # Build the image from the Dockerfile in the current directory.
+    build: .
+    # The command to run. Foreman will start all processes in Procfile.dev.
+    command: ./bin/dev
+    # Mount the current directory on the host to /rails in the container.
+    # This allows for live code reloading without rebuilding the image.
+    volumes:
+      - .:/rails
+      # Add this line to prevent the local node_modules from overwriting
+      # the one in the container.
+      - /rails/node_modules
+    ports:
+      - "3000:3000"
+    # Set environment variables for the Rails app.
+    environment:
+      RAILS_ENV: development
+      DATABASE_HOST: db
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: password
+      REDIS_URL: "redis://redis:6379/1"
+      RAILS_LOG_TO_STDOUT: "true"
+      # This allows the Rails server to be accessible from the host machine.
+      BINDING: '0.0.0.0'
+    # Specify that the web service depends on the db and redis services.
+    # This ensures they are started before the web service.
+    depends_on:
+      - db
+      - redis
+    stdin_open: true
+    tty: true
+
+
+# Define the named volumes for data persistence.
+volumes:
+  postgres_data:
+  redis_data:

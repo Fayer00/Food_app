@@ -1,0 +1,24 @@
+# Ignore bundler config.
+.bundle
+
+# Ignore the development log.
+/log/*
+!/log/.keep
+
+# Ignore the temporary directory.
+/tmp
+
+# Ignore node_modules
+/node_modules
+
+# Ignore storage files
+/storage
+
+# Ignore git files
+.git
+.github
+
+# Ignore docker files
+.dockerignore
+Dockerfile
+docker-compose.yml
