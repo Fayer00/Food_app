@@ -114,7 +114,12 @@ export default function App() {
         <div className="bg-gray-50 min-h-screen font-sans">
             <header className="bg-white shadow-md sticky top-0 z-10">
                 <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-                    <h1 className="text-3xl font-bold text-gray-800">Food App</h1>
+                    <div className="flex items-center space-x-6">
+                        <h1 className="text-3xl font-bold text-gray-800">Food App</h1>
+                        <a href="/admin" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
+                            Admin
+                        </a>
+                    </div>
                     <div className="flex items-center">
                         <select
                             onChange={(e) => handleCurrencyChange(e.target.value)}

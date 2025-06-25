@@ -1,28 +1,25 @@
 Rails.application.routes.draw do
-  # The root of the site is served by HomeController#index,
-  # which loads your React application.
-  root "home#index"
+  # Devise and ActiveAdmin routes should come first.
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
 
-  # The completion URL for Stripe payments is also served by HomeController#index.
-  # Stripe will redirect here after a payment.
-  get "completion", to: "home#index"
-
-  # Define the API routes under the /api/v1 namespace.
+  # API routes are next, so they are matched before the catch-all.
   namespace :api do
     namespace :v1 do
       resources :categories, only: [:index]
       resources :meals, only: [:index]
-
       get "convert_currency", to: "meals#convert_currency"
-
       namespace :payments do
         post "create_payment_intent"
       end
     end
   end
 
-  # This is a catch-all route. It ensures that if a user refreshes the page
-  # on a client-side route, the Rails app still serves the main index page,
-  # allowing React Router to take over.
+  # Application-specific frontend routes.
+  root 'home#index'
+  get "completion", to: "home#index"
+
+  # The catch-all route must be last.
+  # It sends any other path to your React app to handle client-side routing.
   get '*path', to: 'home#index', via: :all
 end

@@ -55,8 +55,8 @@ services:
     command: sh -c "bundle exec rails db:test:prepare && bundle exec rspec"
     profiles: ["test"]
     volumes:
-      - .:/rails
-      - /rails/node_modules
+      - .:/app
+      - bundle_test:/usr/local/bundle
     environment:
       RAILS_ENV: test
       DATABASE_HOST: db
@@ -74,3 +74,4 @@ services:
 volumes:
   postgres_data:
   redis_data:
+  bundle_test:

@@ -8,7 +8,7 @@ gem "rails", "~> 7.0.8"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
-
+gem "sass-rails"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 
@@ -35,6 +35,8 @@ gem "jsbundling-rails"
 gem "money"
 # For interacting with the Stripe API
 gem "stripe"
+gem "devise"
+gem "activeadmin"
 
 # Group for development and testing
 group :development, :test do

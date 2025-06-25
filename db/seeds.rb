@@ -29,4 +29,11 @@ categories_data.each do |cat_data|
   end
 end
 
-puts "Seeding complete."
+if defined?(AdminUser)
+  puts "Creating Admin User..."
+  AdminUser.find_or_create_by!(email: 'admin@example.com') do |user|
+    user.password = 'password'
+    user.password_confirmation = 'password'
+  end
+  puts "Admin User created: admin@example.com / password"
+end
