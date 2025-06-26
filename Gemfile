@@ -38,6 +38,9 @@ gem "stripe"
 gem "devise"
 gem "activeadmin"
 
+# Add this line if it's not already there
+gem 'jsonapi-serializer'
+
 # Group for development and testing
 group :development, :test do
   gem "bootsnap", require: false
