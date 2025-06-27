@@ -55,7 +55,7 @@ services:
     command: sh -c "bundle exec rails db:test:prepare && bundle exec rspec"
     profiles: ["test"]
     volumes:
-      - .:/app
+      - .:/rails
       - bundle_test:/usr/local/bundle
     environment:
       RAILS_ENV: test

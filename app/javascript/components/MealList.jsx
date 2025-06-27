@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const StarIcon = ({ filled }) => (
     <svg className={`w-5 h-5 ${filled ? 'text-yellow-400' : 'text-gray-300'}`} fill="currentColor" viewBox="0 0 20 20">
@@ -15,27 +16,53 @@ const MealCard = ({ meal, onAddToCart, currencySymbol, onAddToWishlist, onRemove
                     <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
                 </svg>
             </button>
-            <img src={meal.image_url} alt={meal.name} className="w-full h-48 object-cover" />
+            <Link to={`/meals/${meal.id}`} className="block">
+                <img src={meal.image_url} alt={meal.name} className="w-full h-48 object-cover" />
+            </Link>
             <div className="p-4 flex flex-col flex-grow">
-                <h3 className="text-xl font-semibold mb-2 flex-grow">{meal.name}</h3>
+                <Link to={`/meals/${meal.id}`} className="block">
+                    <h3 className="text-xl font-semibold mb-2 flex-grow hover:text-blue-500">{meal.name}</h3>
+                </Link>
+                <p className="text-gray-600 mb-2">{meal.category?.name}</p>
                 <div className="flex items-center mb-2">
                     {[...Array(5)].map((_, i) => <StarIcon key={i} filled={i < Math.round(rating)} />)}
                     <span className="ml-2 text-sm text-gray-600">{rating.toFixed(1)}</span>
                 </div>
-                <p className="text-gray-800 font-bold text-lg mb-4">{currencySymbol}{parseFloat(meal.price).toFixed(2)}</p>
-                <button onClick={() => onAddToCart(meal)} className="w-full mt-auto bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors">
-                    Add to Cart
-                </button>
+                <div className="flex justify-between items-center">
+                    <span className="text-lg font-bold">{currencySymbol}{parseFloat(meal.price).toFixed(2)}</span>
+                    <div className="flex space-x-2">
+                        <button onClick={() => isWishlisted ? onRemoveFromWishlist(meal) : onAddToWishlist(meal)} className="text-gray-500 hover:text-red-500">
+                            <svg className={`w-6 h-6 ${isWishlisted ? 'text-red-500 fill-current' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </button>
+                        <button onClick={() => onAddToCart(meal)} className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     );
 };
 
-export default function MealList({ meals, onAddToCart, currencySymbol, wishlist, onAddToWishlist, onRemoveFromWishlist }) {
+export default function MealList({ 
+    meals, 
+    wishlist, 
+    onAddToCart, 
+    onAddToWishlist, 
+    onRemoveFromWishlist,
+    currency,
+    currencySymbol
+}) {
+    const isInWishlist = (mealId) => {
+        return wishlist.some(item => item.wishlistable_id === mealId && item.wishlistable_type === 'Meal');
+    };
+
     if (!meals || meals.length === 0) {
         return <p className="text-center text-gray-500">No meals found.</p>;
     }
-    const wishlistedIds = new Set(wishlist.map(item => item.wishlistable_id));
+
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {meals.map(meal => (
@@ -46,9 +73,9 @@ export default function MealList({ meals, onAddToCart, currencySymbol, wishlist,
                     currencySymbol={currencySymbol}
                     onAddToWishlist={onAddToWishlist}
                     onRemoveFromWishlist={onRemoveFromWishlist}
-                    isWishlisted={wishlistedIds.has(meal.id)}
+                    isWishlisted={isInWishlist(meal.id)}
                 />
             ))}
         </div>
     );
-}
+};

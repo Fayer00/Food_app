@@ -36,6 +36,15 @@ module Api
         end
         render json: converted_meals
       end
+
+      def show
+        @meal = Meal.find(params[:id])
+        render json: @meal, include: [:category]
+      rescue ActiveRecord::RecordNotFound
+        render json: { error: 'Meal not found' }, status: :not_found
+      end
+      
+      # Other actions...
     end
   end
 end

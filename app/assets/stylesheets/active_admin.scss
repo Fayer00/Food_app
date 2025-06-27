@@ -15,3 +15,26 @@
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
+
+.rich-text-content {
+  .trix-content {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  ul, ol {
+    padding-left: 2em;
+  }
+
+  blockquote {
+    border-left: 3px solid #ccc;
+    padding-left: 1em;
+    margin-left: 0;
+    color: #666;
+  }
+}

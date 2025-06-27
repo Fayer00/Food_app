@@ -1,5 +1,7 @@
 class Category < ApplicationRecord
-  has_many :meals
+  has_many :meals, dependent: :nullify
+  has_many :reviews, as: :reviewable, dependent: :destroy
+  
   validates :name, presence: true, uniqueness: true
 
   def self.ransackable_attributes(auth_object = nil)

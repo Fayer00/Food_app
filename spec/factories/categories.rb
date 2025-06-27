@@ -1,7 +1,6 @@
 FactoryBot.define do
   factory :category do
-    name { Faker::Food.unique.ethnic_category }
-    image_url { Faker::Internet.url }
+    sequence(:name) { |n| "Category #{n}" }
     description { Faker::Lorem.paragraph }
   end
 end
